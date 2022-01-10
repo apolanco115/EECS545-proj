@@ -1,2 +1,4 @@
-# EECS545-proj
-project repository for EECS545
+### EECS 545 Project
+
+## Literature Review References
+
