@@ -4,13 +4,11 @@
 Basic overview of git:
 https://www.youtube.com/watch?v=0fKg7e37bQE
 
-
-
 ##### Initial Steps
 1. Fork this repo to your own github account
 2. clone the repo to your computer
-  a. ```git remote add upstream https://github.com/apolanco115/EECS545-proj.git``` <-- this makes sure your fork is up to date with main project
-  b. ```git remote -v``` <-- verify that the previous step was done correctly
+	1. ```git remote add upstream https://github.com/apolanco115/EECS545-proj.git``` <-- this makes sure your fork is up to date with main project
+	2. ```git remote -v``` <-- verify that the previous step was done correctly
 
 #### Contributing code
 1. ```git pull --rebase``` <-- so that you are working with the newest version of the code
