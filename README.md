@@ -20,4 +20,4 @@ https://www.youtube.com/watch?v=0fKg7e37bQE
 7. we'll review together to make sure we don't overwrite our hard work.
 
 ### Literature Review References
-
+1. https://deepmind.com/blog/article/deep-reinforcement-learning
