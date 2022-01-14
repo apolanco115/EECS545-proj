@@ -23,3 +23,6 @@ https://www.youtube.com/watch?v=0fKg7e37bQE
 1. https://deepmind.com/blog/article/deep-reinforcement-learning
 2. https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
 3. https://arxiv.org/pdf/1602.01783.pdf
+
+### Latex Collab Links
+Propsal Link: https://www.overleaf.com/4956242787tkmcsbqcdxht 
