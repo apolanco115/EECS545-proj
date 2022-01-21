@@ -19,10 +19,13 @@ https://www.youtube.com/watch?v=0fKg7e37bQE
 6. create a pull request to *this* repo
 7. we'll review together to make sure we don't overwrite our hard work.
 
-### Literature Review References
+### Relevant papers/articles/repos
 1. https://deepmind.com/blog/article/deep-reinforcement-learning
 2. https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
 3. https://arxiv.org/pdf/1602.01783.pdf
+4. https://towardsdatascience.com/deep-reinforcement-learning-for-automated-stock-trading-f1dad0126a02
+5. https://doctorj.gitlab.io/sairen/
+6. https://github.com/AminHP/gym-anytrading
 
 ### Latex Collab Links
 Propsal Link: https://www.overleaf.com/4956242787tkmcsbqcdxht 
