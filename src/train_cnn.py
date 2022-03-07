@@ -2,47 +2,8 @@ import time
 import torch
 from torch.utils.data import DataLoader
 from torch.nn.utils.rnn import pad_sequence
-from models import CNN_classifier
-from data import preprocess
-
-
-# def train(model, dataloader, epoch):
-#     model.train()
-#     total_acc, total_count = 0, 0
-#     log_interval = 100
-#     start_time = time.time()
-
-#     for idx, (label, text) in enumerate(dataloader):
-#         model.optimizer.zero_grad()
-#         predicted_label = model(text)
-#         print('pred label', predicted_label)
-#         loss = model.loss_fn(predicted_label, label)
-#         print('loss', loss)
-#         loss.backward()
-#         torch.nn.utils.clip_grad_norm_(model.parameters(), 0.1)
-#         model.optimizer.step()
-#         total_acc += (predicted_label.argmax(1) == label).sum().item()
-#         total_count += label.size(0)
-#         if idx % log_interval == 0 and idx > 0:
-#             elapsed = time.time() - start_time
-#             print('| epoch {:3d} | {:5d}/{:5d} batches '
-#                   '| accuracy {:8.3f} | loss {:8.3f}'.format(epoch, idx, len(dataloader),
-#                                                              total_acc/total_count, loss))
-#             total_acc, total_count = 0, 0
-#             start_time = time.time()
-
-
-# def evaluate(model, dataloader):
-#     model.eval()
-#     total_acc, total_count = 0, 0
-
-#     with torch.no_grad():
-#         for idx, (label, text) in enumerate(dataloader):
-#             predicted_label = model(text)
-#             loss = model.loss_fn(predicted_label, label)
-#             total_acc += (predicted_label.argmax(1) == label).sum().item()
-#             total_count += label.size(0)
-#     return total_acc/total_count
+from models.CNN_classifier import TextCNN
+from data.preprocess import Dataset
 
 
 def main():
@@ -58,9 +19,9 @@ def main():
         'dropout': 0.05
     }
 
-    ag_news = preprocess.Dataset()
-    model = CNN_classifier.TextCNN(word_embeddings=ag_news.pretrained_embeds,
-                                   vocab_size=ag_news.vocab_size, params=params)
+    ag_news = Dataset()
+    model = TextCNN(word_embeddings=ag_news.pretrained_embeds,
+                    vocab_size=ag_news.vocab_size, params=params)
 
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=params['lr'])
@@ -81,6 +42,7 @@ def main():
                               shuffle=True, collate_fn=generate_batch)
     test_loader = DataLoader(ag_news.test_data, batch_size=params['batch_size'],
                              shuffle=True, collate_fn=generate_batch)
+    print('begin training')
     for epoch in range(1, params['epochs'] + 1):
         epoch_start_time = time.time()
         model.train()
