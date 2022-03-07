@@ -20,12 +20,10 @@ https://www.youtube.com/watch?v=0fKg7e37bQE
 7. we'll review together to make sure we don't overwrite our hard work.
 
 ### Relevant papers/articles/repos
-1. https://deepmind.com/blog/article/deep-reinforcement-learning
-2. https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
-3. https://arxiv.org/pdf/1602.01783.pdf
-4. https://towardsdatascience.com/deep-reinforcement-learning-for-automated-stock-trading-f1dad0126a02
-5. https://doctorj.gitlab.io/sairen/
-6. https://github.com/AminHP/gym-anytrading
+1. https://arxiv.org/pdf/1312.6034.pdf
+2. https://arxiv.org/pdf/1506.01066.pdf
+3. https://arxiv.org/pdf/1902.00407.pdf
 
 ### Latex Collab Links
-Propsal Link: https://www.overleaf.com/4956242787tkmcsbqcdxht 
+Proposal Link: https://www.overleaf.com/4956242787tkmcsbqcdxht
+Progress Report Link: https://www.overleaf.com/7865164592mzcrqwccrwkf 
