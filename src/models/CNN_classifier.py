@@ -28,9 +28,3 @@ class TextCNN(nn.Module):
         dropped = self.dropout(concat)
         output = self.fc(dropped)
         return output
-
-    def set_optimizer(self, optimizer):
-        self.optimizer = optimizer
-
-    def set_criterion(self, loss_fn):
-        self.loss_fn = loss_fn
