@@ -26,4 +26,5 @@ https://www.youtube.com/watch?v=0fKg7e37bQE
 
 ### Latex Collab Links
 Proposal Link: https://www.overleaf.com/4956242787tkmcsbqcdxht
+
 Progress Report Link: https://www.overleaf.com/7865164592mzcrqwccrwkf 
