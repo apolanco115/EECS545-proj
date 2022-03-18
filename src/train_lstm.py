@@ -5,6 +5,8 @@ from torch.utils.data import DataLoader
 from torch.nn.utils.rnn import pad_sequence
 from models.LSTM_classifier import TextLSTM
 from data.preprocess import Dataset
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 def main():
@@ -12,11 +14,11 @@ def main():
     params = {
         'emb_dim':  300,
         'num_classes': 4,
-        'epochs': 15,
+        'epochs': 20,
         'lr': 0.0001,
         'batch_size': 64,
         'dropout': 0.05,
-        'hidden_size': 8,
+        'hidden_size': 16,
         'hidden_layers': 2,
         'is_bidirectional': True
     }
@@ -24,10 +26,26 @@ def main():
     ag_news = Dataset()
     model = TextLSTM(word_embeddings=ag_news.pretrained_embeds,
                     vocab_size=ag_news.vocab_size, params=params)
+    epoch_avg_train_loss = np.zeros((params['epochs'],))
+    epoch_avg_valid_loss = np.zeros((params['epochs'],))
+    cur_epoch = np.ones((1,), dtype=np.int64)
 
-    ## TO LOAD OLD MODEL
-    # model.load_state_dict(torch.load(PATH))
-    # model.eval()
+    ## TO LOAD OLD MODEL & DATA
+    #model.load_state_dict(torch.load('TextLSTM_state.pt'))
+    #model.eval()
+    #epoch_avg_train_loss = torch.load('LSTM_epoch_avg_train_loss.pt')
+    #epoch_avg_valid_loss = torch.load('LSTM_epoch_avg_valid_loss.pt')
+    #cur_epoch = torch.load('cur_epoch.pt')
+
+    ## PLOT TRAIN/VALID LOSS OVER TIME
+    #fig, ax = plt.subplots(figsize=(9,5))
+    #ax.plot(epoch_avg_train_loss)
+    #ax.plot(epoch_avg_valid_loss)
+    # ax.set_title('LSTM Classifier')
+    #ax.set_xlabel('Epoch')
+    #ax.set_ylabel('Loss')
+    #ax.legend(['training loss','validation loss'])
+    #fig.savefig('LSTM_loss_graph.png')
 
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=params['lr'])
@@ -49,24 +67,20 @@ def main():
     test_loader = DataLoader(ag_news.test_data, batch_size=params['batch_size'],
                              shuffle=True, collate_fn=generate_batch)
 
-    epoch_avg_train_loss = []
-    epoch_avg_valid_loss = []
-
     print('begin training')
-    for epoch in range(1, params['epochs'] + 1):
+    for epoch in range(cur_epoch[0], params['epochs'] + 1):
         epoch_start_time = time.time()
         model.train()
         total_acc, total_count = 0, 0
         log_interval = 100
         start_time = time.time()
 
+        print('-' * 69)
+        print('| begin epoch {:3d} |'.format(epoch))
+        print('-' * 69)
+
         epoch_train_loss = 0.0
         epoch_train_count = 0.0
-
-        ## SAVE MODEL STATE AND LOSS HISTORY
-        torch.save(model.state_dict(), 'TextLSTM_state.pt')
-        torch.save(epoch_avg_train_loss, 'LSTM_epoch_avg_train_loss.pt')
-        torch.save(epoch_avg_valid_loss, 'LSTM_epoch_avg_valid_loss.pt')
 
         for idx, (label, text) in enumerate(train_loader):
             optimizer.zero_grad()
@@ -92,7 +106,7 @@ def main():
         model.eval()
         total_acc, total_count = 0, 0
 
-        epoch_avg_train_loss.append(epoch_train_loss / epoch_train_count)
+        epoch_avg_train_loss[epoch-1] = (epoch_train_loss / epoch_train_count)
 
         epoch_valid_loss = 0.0
         epoch_valid_count = 0.0
@@ -107,7 +121,26 @@ def main():
                 epoch_valid_count += 1
         accu_val = total_acc/total_count
 
-        epoch_avg_valid_loss.append(epoch_valid_loss / epoch_valid_count)
+        epoch_avg_valid_loss[epoch-1] = (epoch_valid_loss / epoch_valid_count)
+
+        cur_epoch[0] = epoch + 1
+
+        ## PLOT TRAIN/VALID LOSS OVER TIME
+        #fig, ax = plt.subplots(figsize=(9,5))
+        #ax.plot(epoch_avg_train_loss)
+        #ax.plot(epoch_avg_valid_loss)
+        #ax.set_xlabel('Epoch')
+        #ax.set_ylabel('Loss')
+        #ax.legend(['training loss','validation loss'])
+        #fig.savefig('LSTM_loss_graph.png')
+
+        print('Saving...')
+        ## SAVE MODEL STATE AND LOSS HISTORY
+        torch.save(model.state_dict(), 'TextLSTM_state_epoch20_hidden16.pt')
+        np.save('LSTM_epoch_avg_train_loss_e20_h16', epoch_avg_train_loss)
+        np.save('LSTM_epoch_avg_valid_loss_e20_h16', epoch_avg_valid_loss)
+        np.save('cur_epoch_e20_e16', cur_epoch)
+        print('Save complete')
 
         print('-' * 69)
         print('| end of epoch {:3d} | time: {:5.2f}s | '
@@ -115,6 +148,7 @@ def main():
                                                time.time() - epoch_start_time,
                                                accu_val))
         print('-' * 69)
+        
 
 
     print('Training Complete!')
@@ -132,9 +166,9 @@ def main():
     print('test accuracy {:8.3f}'.format(accu_test))
 
     ## SAVE MODEL STATE AND LOSS HISTORY
-    torch.save(model.state_dict(), 'TextLSTM_state.pt')
-    torch.save(epoch_avg_train_loss, 'LSTM_epoch_avg_train_loss.pt')
-    torch.save(epoch_avg_valid_loss, 'LSTM_epoch_avg_valid_loss.pt')
+    # torch.save(model.state_dict(), 'TextLSTM_state.pt')
+    # torch.save(epoch_avg_train_loss, 'LSTM_epoch_avg_train_loss.pt')
+    # torch.save(epoch_avg_valid_loss, 'LSTM_epoch_avg_valid_loss.pt')
 
     ## PLOT TRAIN/VALID LOSS OVER TIME
     fig, ax = plt.subplots(figsize=(9,5))
@@ -144,7 +178,7 @@ def main():
     ax.set_xlabel('Epoch')
     ax.set_ylabel('Loss')
     ax.legend(['training loss','validation loss'])
-    fig.savefig('LSTM_loss_graph.png')
+    fig.savefig('LSTM_loss_graph_epoch20_hidden16.png')
 
 
 if __name__ == '__main__':
