@@ -36,3 +36,12 @@ class TextLSTM(nn.Module):
        final_out = self.fc(final_feature_map)
 
        return final_out
+
+    def forward2(self,embedded_sent):
+        lstm_out, (h_n,c_n) = self.lstm(embedded_sent)
+        final_feature_map = self.dropout(h_n)
+
+        final_feature_map = torch.cat([final_feature_map[i,:,:] for i in range(final_feature_map.shape[0])], dim=1)
+        final_out = self.fc(final_feature_map)
+
+        return final_out
