@@ -20,7 +20,17 @@ class TextCNN(nn.Module):
                             (len(self.params['kernel_size'])), self.params['num_classes'])
 
     def forward(self, input):
+        
         embedded = self.embedding(input).permute(1, 2, 0)
+        conv_list = [F.relu(conv(embedded)).squeeze(2) for conv in self.convs]
+        pools = [F.max_pool1d(conved, conved.shape[2]).squeeze(2)
+                 for conved in conv_list]
+        concat = torch.cat(pools, dim=1)
+        dropped = self.dropout(concat)
+        output = self.fc(dropped)
+        return output
+    
+    def forward2(self, embedded):
         conv_list = [F.relu(conv(embedded)).squeeze(2) for conv in self.convs]
         pools = [F.max_pool1d(conved, conved.shape[2]).squeeze(2)
                  for conved in conv_list]

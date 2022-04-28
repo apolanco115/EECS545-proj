@@ -23,6 +23,10 @@ https://www.youtube.com/watch?v=0fKg7e37bQE
 1. https://arxiv.org/pdf/1312.6034.pdf
 2. https://arxiv.org/pdf/1506.01066.pdf
 3. https://arxiv.org/pdf/1902.00407.pdf
+4. https://arxiv.org/pdf/2004.02866.pdf
+5. https://arxiv.org/pdf/2110.06639.pdf
+6. https://arxiv.org/pdf/1810.03716.pdf
+7. https://arxiv.org/pdf/1806.03000.pdf
 
 ### Latex Collab Links
 Proposal Link: https://www.overleaf.com/4956242787tkmcsbqcdxht

@@ -30,13 +30,6 @@ def main():
     epoch_avg_valid_loss = np.zeros((params['epochs'],))
     cur_epoch = np.ones((1,), dtype=np.int64)
 
-    ## TO LOAD OLD MODEL & DATA
-    #model.load_state_dict(torch.load('TextLSTM_state.pt'))
-    #model.eval()
-    #epoch_avg_train_loss = torch.load('LSTM_epoch_avg_train_loss.pt')
-    #epoch_avg_valid_loss = torch.load('LSTM_epoch_avg_valid_loss.pt')
-    #cur_epoch = torch.load('cur_epoch.pt')
-
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=params['lr'])
 
@@ -116,11 +109,12 @@ def main():
         cur_epoch[0] = epoch + 1
 
         print('Saving...')
-        ## SAVE MODEL STATE AND LOSS HISTORY
+
         torch.save(model.state_dict(), 'TextLSTM_state_epoch30_hidden16.pt')
         np.save('LSTM_epoch_avg_train_loss_e30_h16', epoch_avg_train_loss)
         np.save('LSTM_epoch_avg_valid_loss_e30_h16', epoch_avg_valid_loss)
         np.save('cur_epoch_e30_e16', cur_epoch)
+
         print('Save complete')
 
         print('-' * 69)
@@ -156,6 +150,7 @@ def main():
     ax.set_ylabel('Loss')
     ax.legend(['training loss','validation loss'])
     fig.savefig('LSTM_loss_graph_epoch30_hidden16.png')
+
 
 
 if __name__ == '__main__':
